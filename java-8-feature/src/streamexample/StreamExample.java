@@ -3,6 +3,8 @@ package streamexample;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -93,13 +95,34 @@ public class StreamExample {
         studentList.add(new Student("Bob", 27));
 
         Stream<Student> studentStream = studentList.stream();
-        for (String name : studentStream.filter(s -> s.getAge() > 25).map(s -> s.getName()).collect(Collectors.toList())) {
+
+        //Lambda exp are nothing but they provide implementation for abstract method of func interface
+        //and at the same time lambda returns an object of func interface.
+        Predicate<Student> predicate = s -> s.getAge() > 24;//predicate does checking for given condition
+        Function<Student, String> mapper = s1 -> s1.getName();//function applies the transformation and returns a result
+        //filter -> filter out stream elements
+        //map -> transforms one stream to another stream
+//        System.out.println(studentStream
+//                .distinct()
+//                .count());//count() is terminal method
+//        System.out.println(studentStream//stream of Students
+//                .map(student -> student.getAge()) //Stream of Integers(ages)
+//                .max(Comparator.comparingInt(age -> age)));//Max from Stream of Integers using Comparator
+
+        for (String name : studentStream
+                .filter(predicate)
+                .map(mapper)
+                .collect(Collectors.toList())) {
             System.out.println(name);
         }
-
+        //if stream contains 5 elements then, for each element entire stream pipeline
+        //gets executed one after the other.
+        //This is because the Stream Pipeline is Executed Vertically.
 
     }
 }
+
+
 
 
 
